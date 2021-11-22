@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- _____________ TITLE ___________ -->
+    <title>{% block title %}{% endblock title %}</title>
+    <!-- ___________ METATAGS __________ -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="Rockdukan">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="initial-scale=1.0, width=device-width">
+    <!-- ______________ CSS ____________ -->
+    <link rel="stylesheet" href="{% static 'topdf/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'topdf/css/style.css' %}">
+        <!-- _________ JavaScript __________ -->
+    <!-- [if IE]>
+      <script src="{% static 'project/js/es5-shim.min.js'  %}"></script>
+      <script src="{% static 'project/js/html5shiv.min.js' %}"></script>
+      <script src="{% static 'project/js/respond.min.js' %}"></script>
+    <![endif] -->
+    <script src="{% static 'topdf/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'topdf/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'topdf/js/script.js' %}"></script>
+  </head>
+  <body>
+    <nav id = "nav" class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" >Сайт для конвертации файлов в PDF</a>
+      </div>
+    </nav>
+    <!-- ___________ CONTENT ___________ -->
+      {% block content %}{% endblock content %}
+    <!-- _________ JavaScript __________ -->
+    <!-- topdf script -->
+    <script src="{% static 'topdf/js/script.js' %}"></script>
+    <!-- Object-fit support -->
+    <script src="{% static 'topdf/js/ofi.min.js' %}"></script>
+    <script>objectFitImages();</script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %} Конвертируй в PDF {% endblock title %}
+{% block content %}
+      <main>
+      	<div style="margin: 2% 10%;" class="jumbotron">
+                  <p></p>
+                  <h1 class="display-3">Привет</h1>
+                  <h4 class="lead"> Этот сайт создан чтобы конвертировать файлы в PDF</h4>
+                  <br>
+                  <h4 class="lead"> Тебе достаточно загрузить файл по кнопке ниже</h4>
+                  <hr class="my-4">
+                  <div class="form-group load">
+                        <form method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="input-group mb-3">
+                                    <input class="form-control loadfile" type="file" name="myfile" aria-describedby="button-addon2">
+                                    <button  class="btn btn-primary btn submit" type="submit" id="button-addon2">Загрузка</button>
+                              </div>
+                        </form>
+                        <div class="alert alert-dismissible alert-info">
+                              <center>
+                              <strong>Ссылка на исходный файл: </strong><a href="{{ fileurl }}" class="alert-link"> После загрузки файла ссылка станет активной </a>
+                              </center>
+                        </div>      
+                        <br>
+                        <center><h1 class="text-secondary">{{ text }}</h1></center>
+                        <br>
+                        <div class="alert alert-dismissible alert-warning">
+                              <center>
+                              <strong>Ссылка на страницу с XML ответом сервера: </strong> <a href="{{ api }}" class="alert-link"> После загрузки файла ссылка станет активной </a>
+                              </center>      
+                        </div>
+                        <br>
+                        <a class="btn btn-primary btn-lg convert" href="{{ url_pdffile }}" role="button">Конвертировать файл</a>  
+                  </div>
+            </div>
+      </main>
+{% endblock content%}
