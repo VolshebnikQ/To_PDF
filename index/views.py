@@ -17,7 +17,6 @@ from random import randint
 import random
 import yadisk
 
-
 #  Токен Яндекс.Диска, для того чтобы работать с файлами облачного серфиса, что на мой взгляд интереснее
 yandexTOKEN = "AQAAAAATFRfsAAeDdPOX1KePGEz3h2JOmPtD2MI"
 
@@ -45,9 +44,27 @@ class Index(View):
 
     #  Загрузка страницы при отправки на сервер файла для конвертации
     def post(self, request, *args, **kwargs):
+        #  Проверка на то выбран файл или нет
+        if len(request.FILES) == 0:
+                return render(
+                    request,
+                    'index/index.html',
+                    {
+                        'file_url': "", 'api': "", 'url_pdffile': "",
+                        'text': 'Вы не выбрали файл'
+                    })
+
         if request.method == 'POST' and request.FILES:
             #  Активация Яндекс.Диск
             y = yadisk.YaDisk(token=yandexTOKEN)
+            if y.check_token() == False:
+                return render(
+                    request,
+                    'index/index.html',
+                    {
+                        'file_url': "", 'api': "", 'url_pdffile': "",
+                        'text': 'Облако не отвечает'
+                    })
             #  Удаление всех фалов в дириктории приложения
             clear_YaDisk(list(y.listdir("/topdf/")))
 
@@ -74,18 +91,26 @@ class Index(View):
                     request,
                     'index/index.html',
                     {
-                        'file_url': "#", 'api': "#", 'url_pdffile': "#",
+                        'file_url': "", 'api': "", 'url_pdffile': "",
                         'text': 'Расширение файла не подходит'
                     })
+            try:
+                #  Создание json запроса
+                apitopdf = Api(format, fileurl, filename, filetype, key)
+                #  Выполнение json запроса
+                api = requests.get(apitopdf)
 
-            #  Создание json запроса
-            apitopdf = Api(format, fileurl, filename, filetype, key)
-            #  Выполнение json запроса
-            api = requests.get(apitopdf)
-
-            #  Получение ссылки на конвертированный файл
-            url_pdffile = geturl(api)
-
+                #  Получение ссылки на конвертированный файл
+                url_pdffile = geturl(api)
+            except BaseException:
+                return render(
+                request,
+                'index/index.html',
+                {
+                    'fileurl': '', 'api': '','url_pdffile': '', 
+                    'text': 'Подключение к серверу OnlyOffice отсутствует'
+                })
+            
             return render(
                 request,
                 'index/index.html',
